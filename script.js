@@ -362,11 +362,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 8. Live Form Submission via Google Sheets (Excel) or FormSubmit.co
     // TO LINK WITH EXCEL/GOOGLE SHEETS: 
     // Paste your deployed Google Apps Script Web App URL below.
     // If left empty, the form will fall back to FormSubmit.co (email-only).
-    const GOOGLE_SHEET_WEBAPP_URL = ""; 
+    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzkZ5IBtXhkPub7iuBamfy3UPyl-5B9oOtJByDJKoiIKkR9jhyMWCmCJdWwpVImSUQA/exec"; 
 
     const contactForm = document.getElementById('contact-form');
     const formSubmitBtn = document.getElementById('form-submit');
