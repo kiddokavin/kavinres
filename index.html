@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavin Loganathan | ECE Student & Creative Designer Portfolio</title>
+    <meta name="description" content="Portfolio of Kavin Loganathan, an enthusiastic Electronics and Communication Engineering student and Creative Designer specializing in IoT, Cisco networking, Java programming, and Canva design.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Ambient Background Effects -->
+    <div class="ambient-glow" id="ambient-glow"></div>
+    <canvas class="stars-container" id="stars-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-accent">&lt;</span>Kavin Loganathan<span class="logo-accent"> /&gt;</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#certifications" class="nav-link">Certifications</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-primary btn-sm">Hire Me</a>
+                <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <button class="mobile-close" id="mobile-close">
+            <i data-lucide="x"></i>
+        </button>
+        <div class="mobile-links">
+            <a href="#about" class="mobile-link">About</a>
+            <a href="#skills" class="mobile-link">Skills</a>
+            <a href="#projects" class="mobile-link">Projects</a>
+            <a href="#certifications" class="mobile-link">Certifications</a>
+            <a href="#contact" class="mobile-link">Contact</a>
+            <a href="#contact" class="btn btn-primary btn-md mobile-cta">Get in Touch</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge-container">
+                        <span class="hero-badge">
+                            <span class="pulse-dot"></span> Available for Projects
+                        </span>
+                    </div>
+                    <h1 class="hero-title">
+                        Hi, I'm <span class="gradient-text">Kavin Loganathan</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        An Electronics & Communication Engineering student who bridges the gap between hardware prototyping, secure networking, and creative visual design.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">
+                            <span>Explore Projects</span>
+                            <i data-lucide="arrow-right"></i>
+                        </a>
+                        <a href="#contact" class="btn btn-outline">
+                            <span>Get in Touch</span>
+                        </a>
+                    </div>
+                    <div class="hero-socials">
+                        <span class="socials-label">Connect with me:</span>
+                        <div class="social-icons">
+                            <a href="https://www.linkedin.com/in/kavin-loganathan-524598338/" target="_blank" rel="noopener" class="social-icon-link" aria-label="LinkedIn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            </a>
+                            <a href="https://github.com/kiddokavin" target="_blank" rel="noopener" class="social-icon-link" aria-label="GitHub">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                            </a>
+                            <a href="mailto:2007kavinl@gmail.com" class="social-icon-link" aria-label="Email">
+                                <i data-lucide="mail"></i>
+                            </a>
+                            <a href="tel:+919442218610" class="social-icon-link" aria-label="Phone">
+                                <i data-lucide="phone"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-scroll-indicator">
+                <a href="#about" class="scroll-arrow" aria-label="Scroll down">
+                    <i data-lucide="chevrons-down"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- About & Timeline Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">About Me</h2>
+                    <p class="section-subtitle">Blending technical engineering fundamentals with creative, visual execution.</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-text-card glass-card">
+                        <div class="card-icon">
+                            <i data-lucide="user"></i>
+                        </div>
+                        <h3>My Journey</h3>
+                        <p>
+                            I am an enthusiastic Electronics and Communication Engineering student with a deep fascination for how systems connect and communicate. Whether it's setting up firmware on microcontrollers, building secure system architectures, or detailing elegant user experiences, I strive for harmony between utility and design.
+                        </p>
+                        <p>
+                            With a strong foundation in hardware (Arduino, NodeMCU) and software protocols, I also enjoy using Canva, WordPress, and custom code to design visually compelling interfaces and materials that capture user attention.
+                        </p>
+                        <div class="about-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Location:</span>
+                                <span class="meta-val">Erode, Tamil Nadu, India</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Email:</span>
+                                <span class="meta-val">2007kavinl@gmail.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <h3 class="timeline-title"><i data-lucide="briefcase"></i> Experience & Education</h3>
+                        <div class="timeline">
+                            <!-- Timeline Item: Internship -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Jul 2024 - Aug 2024</div>
+                                <div class="timeline-content glass-card">
+                                    <span class="timeline-tag tag-work">Internship</span>
+                                    <h4>Industrial Intern</h4>
+                                    <p class="timeline-sub">Tamil Nadu Newsprint and Papers Limited (TNPL)</p>
+                                    <ul class="timeline-bullets-list">
+                                        <li>Stepped into a live industrial environment, translating theoretical ECE concepts into plant operations.</li>
+                                        <li>Observed coordinated control systems and automation pipelines keeping an entire plant running efficiently.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Timeline Item: B.E -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2024 - 2028</div>
+                                <div class="timeline-content glass-card">
+                                    <span class="timeline-tag tag-edu">Education</span>
+                                    <h4>B.E. in Electronics and Communication Engineering</h4>
+                                    <p class="timeline-sub">Chettinad College of Engineering and Technology, Karur</p>
+                                    <p class="timeline-desc">Focussing on networking, microcontrollers, signals, and digital system designs. Currently maintaining a 6.0 CGPA.</p>
+                                </div>
+                            </div>
+                            <!-- Timeline Item: HSC -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2024</div>
+                                <div class="timeline-content glass-card">
+                                    <span class="timeline-tag tag-edu">Education</span>
+                                    <h4>HSC - 12th Grade</h4>
+                                    <p class="timeline-sub">Cheran Matriculation Higher Secondary School</p>
+                                    <p class="timeline-desc">Completed with 55% score in Science & Mathematics stream.</p>
+                                </div>
+                            </div>
+                            <!-- Timeline Item: SSLC -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2022</div>
+                                <div class="timeline-content glass-card">
+                                    <span class="timeline-tag tag-edu">Education</span>
+                                    <h4>SSLC - 10th Grade</h4>
+                                    <p class="timeline-sub">Sri Ramakrishna Matriculation School, Karur</p>
+                                    <p class="timeline-desc">Completed secondary school with 60.6% score.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section bg-alt">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Technical Expertise</h2>
+                    <p class="section-subtitle">My core toolkits across hardware prototyping, software design, and digital creation.</p>
+                </div>
+
+                <div class="skills-grid">
+                    <!-- Category: Hardware & IoT -->
+                    <div class="skills-category-card glass-card">
+                        <div class="category-header">
+                            <div class="category-icon icon-cyan">
+                                <i data-lucide="cpu"></i>
+                            </div>
+                            <h3>Hardware & IoT</h3>
+                        </div>
+                        <div class="skills-list">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Arduino / NodeMCU (ESP8266)</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Microcontrollers (8051)</span>
+                                    <span>70%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 70%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Sensors & Gyros (MPU6050)</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 75%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Azure IoT Hub Integration</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 65%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Technical Tools -->
+                    <div class="skills-category-card glass-card">
+                        <div class="category-header">
+                            <div class="category-icon icon-purple">
+                                <i data-lucide="wrench"></i>
+                            </div>
+                            <h3>Engineering Tools</h3>
+                        </div>
+                        <div class="skills-list">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Cisco Packet Tracer</span>
+                                    <span>80%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>MATLAB Modeling</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 65%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Tinkercad & PCB Design</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 75%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>EDA Playground</span>
+                                    <span>60%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 60%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Software & Code -->
+                    <div class="skills-category-card glass-card">
+                        <div class="category-header">
+                            <div class="category-icon icon-green">
+                                <i data-lucide="code-2"></i>
+                            </div>
+                            <h3>Programming & Data</h3>
+                        </div>
+                        <div class="skills-list">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Java Foundation (OOP, DSA)</span>
+                                    <span>80%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Database Management (SQL/NoSQL)</span>
+                                    <span>70%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 70%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Web Basics (HTML, CSS, JS)</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 65%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Python & AI Services (Cognitive)</span>
+                                    <span>60%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 60%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Creative & Soft Skills -->
+                    <div class="skills-category-card glass-card">
+                        <div class="category-header">
+                            <div class="category-icon icon-yellow">
+                                <i data-lucide="palette"></i>
+                            </div>
+                            <h3>Creative & Professional</h3>
+                        </div>
+                        <div class="skills-list">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Canva Design & Asset Creation</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 90%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Website Builders (Wix, WordPress)</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 75%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Microsoft Excel (Data Filters)</span>
+                                    <span>70%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 70%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span>Communication & Teamwork</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="skill-progress-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Featured Projects</h2>
+                    <p class="section-subtitle">Showcasing custom prototypes, networks, and interactive applications.</p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Project 1: Cisco Secure Networking -->
+                    <div class="project-card glass-card">
+                        <div class="project-visual network-visual">
+                            <!-- Vector visual of network topology -->
+                            <div class="network-diagram">
+                                <div class="net-node router" title="Central Cisco Router">
+                                    <i data-lucide="router"></i>
+                                    <span>Main Router</span>
+                                </div>
+                                <div class="net-node firewall" title="Firewall/Security Gateway">
+                                    <i data-lucide="shield-check"></i>
+                                    <span>Firewall</span>
+                                </div>
+                                <div class="net-node database" title="Patient Records DB">
+                                    <i data-lucide="database"></i>
+                                    <span>Secure DB</span>
+                                </div>
+                                <div class="net-node client" title="Hospital Admin PC">
+                                    <i data-lucide="monitor"></i>
+                                    <span>Admin Terminal</span>
+                                </div>
+                                <svg class="net-connections">
+                                    <line x1="20%" y1="50%" x2="40%" y2="50%" class="connection-line pulsing" />
+                                    <line x1="40%" y1="50%" x2="60%" y2="25%" class="connection-line" />
+                                    <line x1="40%" y1="50%" x2="60%" y2="75%" class="connection-line" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Networking & Security</span>
+                            <h3>Secure Healthcare Networking in Cisco</h3>
+                            <p class="project-desc">
+                                A secure, segmented network architecture designed for healthcare infrastructures. It ensures the safe, encrypted, and reliable transmission of critical, sensitive patient records between terminals, databases, and remote systems while mitigating internal and external breaches.
+                            </p>
+                            <div class="project-meta-details">
+                                <div><strong>Tools Used:</strong> Cisco Packet Tracer, Routing Protocols, Access Control Lists (ACLs).</div>
+                                <div><strong>Beneficiaries:</strong> Hospital Networks, Medical IT Administrators.</div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Cisco Packet Tracer</span>
+                                <span class="tag">Network Security</span>
+                                <span class="tag">Routing Protocols</span>
+                                <span class="tag">ACLs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Nova AI -->
+                    <div class="project-card glass-card">
+                        <div class="project-visual web-visual">
+                            <!-- Visual of the chat assistant app -->
+                            <div class="chat-mockup">
+                                <div class="chat-mockup-header">
+                                    <div class="avatar-dot"></div>
+                                    <span>Nova AI Assistant</span>
+                                    <span class="status-indicator"></span>
+                                </div>
+                                <div class="chat-mockup-messages">
+                                    <div class="msg bot">Hello! How can I assist you with your queries today?</div>
+                                    <div class="msg user">Analyze my local sensor data...</div>
+                                    <div class="msg bot typing">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                </div>
+                                <div class="chat-mockup-input">
+                                    <span>Ask Nova AI...</span>
+                                    <i data-lucide="send" class="icon-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Artificial Intelligence & Web</span>
+                            <h3>Nova AI Chatbox</h3>
+                            <p class="project-desc">
+                                A responsive AI-powered web chat interface built to demonstrate front-end integration with smart processing pipelines. Nova AI serves as a sample conversational companion featuring responsive chat cards, interactive messaging states, and a modern dark UI overlay.
+                            </p>
+                            <div class="project-meta-details">
+                                <div><strong>Tools Used:</strong> JavaScript, CSS, HTML5, AI Integration Core.</div>
+                                <div><strong>Live Site:</strong> Host environments on GitHub pages.</div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Web UI</span>
+                                <span class="tag">Chat Interface</span>
+                                <span class="tag">AI System</span>
+                            </div>
+                            <div class="project-cta-container">
+                                <a href="https://kiddokavin.github.io/novaai/" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-icon">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="external-link"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="section bg-alt">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Certifications & Achievements</h2>
+                    <p class="section-subtitle">A collection of technical credentials, specialized coursework, and job simulations.</p>
+                </div>
+
+                <div class="certifications-controls">
+                    <!-- Search Bar -->
+                    <div class="search-box">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="cert-search" placeholder="Search certifications by name, issuer, or keyword...">
+                    </div>
+                    <!-- Categories -->
+                    <div class="filter-categories" id="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All (23)</button>
+                        <button class="filter-tab" data-filter="cloud-data">Cloud & Database</button>
+                        <button class="filter-tab" data-filter="coding">Coding & CS</button>
+                        <button class="filter-tab" data-filter="iot-hw">IoT & Hardware</button>
+                        <button class="filter-tab" data-filter="professional">Professional Skills</button>
+                    </div>
+                </div>
+
+                <div class="certifications-grid" id="certifications-grid">
+                    <!-- Certifications will be dynamically rendered here via script.js for maintainability and filter states -->
+                    <noscript>
+                        <!-- Fallback static content for SEO -->
+                        <div class="cert-card glass-card">
+                            <h4>AWS S3 Basics</h4>
+                            <p class="cert-issuer">AWS</p>
+                        </div>
+                        <div class="cert-card glass-card">
+                            <h4>Introduction to NoSQL Databases</h4>
+                            <p class="cert-issuer">Coursera / Databases</p>
+                        </div>
+                    </noscript>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Let's Connect</h2>
+                    <p class="section-subtitle">Have a project idea, want to collaborate, or discuss networking opportunities?</p>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- Contact Information Card -->
+                    <div class="contact-info-card glass-card">
+                        <h3>Contact Information</h3>
+                        <p class="contact-intro">Feel free to reach out via email, phone, or connect with me on LinkedIn. I'm always open to new learning chapters and collaborative designs.</p>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method-item">
+                                <div class="method-icon cyan">
+                                    <i data-lucide="mail"></i>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-title">Email</span>
+                                    <a href="mailto:2007kavinl@gmail.com" class="method-link">2007kavinl@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-method-item">
+                                <div class="method-icon purple">
+                                    <i data-lucide="phone"></i>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-title">Phone / WhatsApp</span>
+                                    <a href="tel:+919442218610" class="method-link">+91 94422 18610</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-method-item">
+                                <div class="method-icon green">
+                                    <i data-lucide="map-pin"></i>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-title">Location</span>
+                                    <span class="method-text">Erode, Tamil Nadu, India</span>
+                                </div>
+                            </div>
+
+                            <div class="contact-method-item">
+                                <div class="method-icon yellow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-title">LinkedIn Connection</span>
+                                    <a href="https://www.linkedin.com/in/kavin-loganathan-524598338/" target="_blank" rel="noopener" class="method-link">linkedin.com/in/kavin-loganathan-524598338/</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stylized Mini Vector Map representation -->
+                        <div class="mini-map-vector">
+                            <div class="map-bg"></div>
+                            <div class="map-pin-pulse">
+                                <div class="pulse-ring"></div>
+                                <div class="pin-point"></div>
+                            </div>
+                            <span class="map-label">Erode, TN</span>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form Card -->
+                    <div class="contact-form-card glass-card">
+                        <h3>Send a Message</h3>
+                        <form id="contact-form" class="modern-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-name">Your Name</label>
+                                    <input type="text" id="form-name" required placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="form-email">Your Email</label>
+                                    <input type="email" id="form-email" required placeholder="john@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-subject">Subject</label>
+                                <input type="text" id="form-subject" required placeholder="Project Collaboration">
+                            </div>
+                            <div class="form-group">
+                                <label for="form-message">Message</label>
+                                <textarea id="form-message" required rows="5" placeholder="Write your message here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" id="form-submit">
+                                <span>Send Message</span>
+                                <i data-lucide="send"></i>
+                            </button>
+                            <div id="form-status-msg" class="form-status"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-area">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <span class="logo-accent">&lt;</span>Kavin Loganathan<span class="logo-accent"> /&gt;</span>
+                </a>
+                <p>ECE Student & Creative Designer. Architecting systems, crafting aesthetics.</p>
+            </div>
+            <div class="footer-nav">
+                <h4>Navigation</h4>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#certifications">Certifications</a>
+            </div>
+            <div class="footer-credits">
+                <p>&copy; 2026 Kavin Loganathan. All rights reserved.</p>
+                <p class="built-with">Built with HTML5, CSS3, & Lucide Icons</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
