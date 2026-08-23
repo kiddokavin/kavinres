@@ -1916,3 +1916,120 @@ a {
     pointer-events: none;
 }
 
+/* Project Visual details - Decision Support dashboard mockup */
+.decision-visual {
+    background: radial-gradient(circle at center, #022c22 0%, #030712 100%);
+    padding: 1rem;
+}
+
+.decision-mockup {
+    width: 100%;
+    max-width: 320px;
+    height: 240px;
+    background: #060814;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.mockup-header {
+    background: rgba(255,255,255,0.03);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mockup-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+.mockup-dot.red { background-color: var(--color-accent); }
+.mockup-dot.yellow { background-color: #f59e0b; }
+.mockup-dot.green { background-color: var(--color-success); }
+
+.mockup-title {
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: monospace;
+    color: var(--text-secondary);
+}
+
+.mockup-body {
+    flex-grow: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.mockup-metrics {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.m-box {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.m-lbl {
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.m-val {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+.m-val.green { color: var(--color-success); }
+.m-val.yellow { color: #f59e0b; }
+
+.mockup-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 12px;
+    padding: 0 1rem;
+    height: 90px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.mockup-chart::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+}
+
+.bar {
+    width: 28px;
+    background: linear-gradient(180deg, var(--color-primary) 0%, rgba(0, 242, 254, 0.3) 100%);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    transition: height 0.5s ease;
+}
+
+.bar-1 { background: linear-gradient(180deg, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.2) 100%); }
+.bar-2 { background: linear-gradient(180deg, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.2) 100%); }
+.bar-3 { background: linear-gradient(180deg, var(--color-accent) 0%, rgba(255, 0, 127, 0.2) 100%); }
+

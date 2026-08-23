@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Decision Support System (EDSS)</title>
+  
+  <!-- FontAwesome for Corporate Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Chart.js for High-Fidelity Interactive Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+
+</head>
+<body>
+
+  <!-- FULL SCREEN LOGIN OVERLAY (Enterprise Security Module with OTP Verification) -->
+  <div id="login-screen">
+    <div class="login-card glass-card">
+      <div class="login-header">
+        <img src="logo.svg" alt="EDSS Logo">
+        <h3>Enterprise DSS Portal</h3>
+        <p>Strategic Decision Support Portal</p>
+      </div>
+      
+      <div id="login-error-msg" class="login-error" style="display: none;">
+        <i class="fa-solid fa-circle-exclamation"></i> Access Denied.
+      </div>
+      
+      <!-- SIGN IN PANEL -->
+      <form class="login-form" id="login-step-signin">
+        <div class="form-group">
+          <label for="login-email">Corporate Email Address</label>
+          <input type="email" id="login-email" name="email" autocomplete="username" class="input-glow" placeholder="executive@company.com" required>
+        </div>
+        
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <label for="login-password" style="margin-bottom: 0;">Password</label>
+            <a href="#" id="toggle-to-forgot" style="font-size: 0.75rem; color: var(--primary); text-decoration: underline; font-weight: 500;">Forgot Password?</a>
+          </div>
+          <div style="position: relative; width: 100%;">
+            <input type="password" id="login-password" name="password" autocomplete="current-password" class="input-glow" placeholder="••••••••" required style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+            <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="login-signin-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In to Portal
+        </button>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <span style="color: var(--text-secondary);">New user?</span> 
+          <a href="#" id="toggle-to-signup" style="color: var(--primary); font-weight: 600; text-decoration: underline; margin-left: 0.25rem;">Create Corporate Account</a>
+        </div>
+      </form>
+      
+      <!-- FORGOT PASSWORD: STEP 1 (EMAIL REQUEST) -->
+      <form class="login-form" id="login-step-forgot" style="display: none;">
+        <div style="text-align: center; margin-bottom: 1rem; width: 100%;">
+          <h4 style="font-family: var(--font-heading); color: var(--text-primary); font-size: 1rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-circle-question" style="color: var(--primary);"></i> Reset Security Password</h4>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">Enter your registered corporate email to receive a reset OTP code.</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="forgot-email">Corporate Email Address</label>
+          <input type="email" id="forgot-email" name="email" autocomplete="username" class="input-glow" placeholder="executive@company.com" required>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="forgot-send-otp-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          <i class="fa-solid fa-paper-plane"></i> Send Reset Code (OTP)
+        </button>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <a href="#" class="back-to-signin-link" style="color: var(--text-secondary); font-weight: 600; text-decoration: underline;">Back to Sign In</a>
+        </div>
+      </form>
+      
+      <!-- FORGOT PASSWORD: STEP 2 (OTP VERIFY) -->
+      <form class="login-form" id="login-step-forgot-otp" style="display: none;">
+        <div style="text-align: center; margin-bottom: 1rem; width: 100%;">
+          <h4 style="font-family: var(--font-heading); color: var(--text-primary); font-size: 1rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> Reset Verification</h4>
+          <p style="font-size: 0.75rem; color: var(--text-muted);" id="forgot-otp-sent-label">Enter the 6-digit reset code sent to your inbox.</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="forgot-otp-input">Verification Code (OTP)</label>
+          <input type="text" id="forgot-otp-input" name="otp" autocomplete="one-time-code" class="input-glow" placeholder="Enter 6-digit code" maxlength="6" required>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="forgot-verify-otp-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          <i class="fa-solid fa-circle-check"></i> Verify Reset Code
+        </button>
+        
+        <!-- RESEND OTP WRAPPER -->
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.75rem;">
+          <span id="forgot-resend-timer-text" style="color: var(--text-muted);">Resend code in <strong id="forgot-resend-timer-count">30</strong>s</span>
+          <a href="#" id="forgot-resend-btn" style="display: none; color: var(--primary); font-weight: 600; text-decoration: underline;">Resend Verification Code</a>
+        </div>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <a href="#" class="back-to-signin-link" style="color: var(--text-secondary); font-weight: 600; text-decoration: underline;">Back to Sign In</a>
+        </div>
+      </form>
+      
+      <!-- FORGOT PASSWORD: STEP 3 (NEW PASSWORD) -->
+      <form class="login-form" id="login-step-forgot-reset" style="display: none;">
+        <div style="text-align: center; margin-bottom: 1rem; width: 100%;">
+          <h4 style="font-family: var(--font-heading); color: var(--text-primary); font-size: 1rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-lock" style="color: var(--success);"></i> Choose New Password</h4>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">Define a secure password for your account.</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="forgot-new-password">New Password</label>
+          <div style="position: relative; width: 100%;">
+            <input type="password" id="forgot-new-password" name="new-password" autocomplete="new-password" class="input-glow" placeholder="Choose a password" required style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+            <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label for="forgot-confirm-password">Confirm Password</label>
+          <div style="position: relative; width: 100%;">
+            <input type="password" id="forgot-confirm-password" name="confirm-password" autocomplete="new-password" class="input-glow" placeholder="Confirm password" required style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+            <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="forgot-submit-new-pass-btn" style="width: 100%; justify-content: center; margin-top: 0.85rem;">
+          <i class="fa-solid fa-key"></i> Reset Password & Sign In
+        </button>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <a href="#" class="back-to-signin-link" style="color: var(--text-secondary); font-weight: 600; text-decoration: underline;">Back to Sign In</a>
+        </div>
+      </form>
+      
+      <!-- SIGN UP PANEL -->
+      <form class="login-form" id="login-step-signup" style="display: none;">
+        <div class="form-group">
+          <label for="signup-name">Your Full Name / Username</label>
+          <input type="text" id="signup-name" name="name" autocomplete="name" class="input-glow" placeholder="e.g., Madhu" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-email">Corporate Email Address</label>
+          <input type="email" id="signup-email" name="email" autocomplete="username" class="input-glow" placeholder="executive@company.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-password">Choose Password</label>
+          <div style="position: relative; width: 100%;">
+            <input type="password" id="signup-password" name="password" autocomplete="new-password" class="input-glow" placeholder="Choose a password" required style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+            <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="login-signup-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          <i class="fa-solid fa-user-plus"></i> Register & Create Account
+        </button>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <span style="color: var(--text-secondary);">Already registered?</span> 
+          <a href="#" id="toggle-to-signin" style="color: var(--primary); font-weight: 600; text-decoration: underline; margin-left: 0.25rem;">Sign In here</a>
+        </div>
+      </form>
+
+      <!-- SIGN UP OTP VERIFICATION -->
+      <form class="login-form" id="login-step-signup-otp" style="display: none;">
+        <div style="text-align: center; margin-bottom: 1rem; width: 100%;">
+          <h4 style="font-family: var(--font-heading); color: var(--text-primary); font-size: 1rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> Confirm Registration</h4>
+          <p style="font-size: 0.75rem; color: var(--text-muted);" id="signup-otp-sent-label">Enter the 6-digit activation code sent to your inbox.</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-otp-input">Verification Code (OTP)</label>
+          <input type="text" id="signup-otp-input" name="otp" autocomplete="one-time-code" class="input-glow" placeholder="Enter 6-digit code" maxlength="6" required>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="signup-verify-otp-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          <i class="fa-solid fa-circle-check"></i> Verify & Activate Account
+        </button>
+        
+        <!-- RESEND OTP WRAPPER -->
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.75rem;">
+          <span id="signup-resend-timer-text" style="color: var(--text-muted);">Resend code in <strong id="signup-resend-timer-count">30</strong>s</span>
+          <a href="#" id="signup-resend-btn" style="display: none; color: var(--primary); font-weight: 600; text-decoration: underline;">Resend Activation Code</a>
+        </div>
+        
+        <div style="text-align: center; margin-top: 0.85rem; font-size: 0.78rem;">
+          <a href="#" id="signup-back-to-form" style="color: var(--text-secondary); font-weight: 600; text-decoration: underline;">Back to Registration</a>
+        </div>
+      </form>
+      
+
+    </div>
+  </div>
+
+  <!-- Main Grid Container -->
+  <div class="app-container" id="app-container">
+    
+    <!-- LEFT SIDEBAR: Navigation & App State -->
+    <nav class="sidebar" id="sidebar-nav">
+      <div class="logo-container">
+        <img src="logo.svg" alt="Decision Support System Logo" id="app-logo-graphic">
+        <span class="logo-text">Enterprise DSS</span>
+      </div>
+      
+      <ul class="nav-links">
+        <li class="nav-item active" data-view="dashboard" id="nav-dashboard">
+          <button><i class="fa-solid fa-chart-line"></i> Executive Dashboard</button>
+        </li>
+        <li class="nav-item" data-view="workspace" id="nav-workspace">
+          <button><i class="fa-solid fa-sliders"></i> Decision Workspace</button>
+        </li>
+        <li class="nav-item" data-view="ai-analysis" id="nav-ai-analysis">
+          <button><i class="fa-solid fa-brain"></i> Strategic SWOT & PESTLE</button>
+        </li>
+        <li class="nav-item" data-view="scenario" id="nav-scenario">
+          <button><i class="fa-solid fa-shuffle"></i> Risk Scenario Planner</button>
+        </li>
+        <li class="nav-item" data-view="settings" id="nav-settings">
+          <button><i class="fa-solid fa-gear"></i> System Settings</button>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div id="sidebar-user-profile" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 6px; margin-bottom: 0.75rem; font-size: 0.82rem; color: #cbd5e1; cursor: pointer;">
+          <div style="width: 22px; height: 22px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,255,255,0.1);">
+            <img id="sidebar-avatar-img" src="" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+            <i class="fa-solid fa-circle-user" id="sidebar-avatar-icon" style="font-size: 1.1rem; color: var(--primary);"></i>
+          </div>
+          <span id="sidebar-username-display">Executive User</span>
+        </div>
+        <div class="api-status-badge" id="api-status-badge" style="margin-bottom: 0.5rem;">
+          <span class="status-indicator connected" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+          <span class="status-label" style="font-weight: 600;">Online Mode Active</span>
+        </div>
+        <button class="btn-secondary" id="logout-btn" style="width: 100%; justify-content: center; font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </nav>
+    
+    <!-- CENTER MAIN PANEL: Scrollable Workspace Content -->
+    <main class="main-content" id="main-content-scroll">
+      
+      <!-- VIEW 1: EXECUTIVE DASHBOARD -->
+      <section class="app-view active" id="dashboard-view">
+        <div class="main-header">
+          <div class="title-area">
+            <h2>Corporate Decisions Hub</h2>
+            <p>Establish decision boundaries, weight criteria, and generate executive briefs.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-primary" id="create-decision-btn">
+              <i class="fa-solid fa-plus"></i> New Decision Model
+            </button>
+          </div>
+        </div>
+        
+        <div class="quick-stats">
+          <div class="stat-item glass-card">
+            <div class="stat-value" id="stat-total-decisions">0</div>
+            <div class="stat-label">Active Models</div>
+          </div>
+          <div class="stat-item glass-card">
+            <div class="stat-value" id="stat-active-alternatives">0</div>
+            <div class="stat-label">Evaluated Alternatives</div>
+          </div>
+          <div class="stat-item glass-card">
+            <div class="stat-value" id="stat-active-criteria">0</div>
+            <div class="stat-label">Defined Criteria</div>
+          </div>
+        </div>
+        
+        <!-- Interactive Decision Templates -->
+        <div class="templates-section">
+          <h3 class="section-title"><i class="fa-solid fa-wand-magic-sparkles text-gradient-purple"></i> Launch from Executive Template</h3>
+          <div class="templates-grid" id="templates-grid">
+            <div class="template-card glass-card" data-template="tech-stack">
+              <div class="template-icon"><i class="fa-solid fa-database"></i></div>
+              <div class="template-info">
+                <h4>Database Architecture</h4>
+                <p>Compare SQL, NoSQL, and Document databases for query scale and support.</p>
+              </div>
+            </div>
+            <div class="template-card glass-card" data-template="hq-location">
+              <div class="template-icon"><i class="fa-solid fa-city"></i></div>
+              <div class="template-info">
+                <h4>Global Headquarters</h4>
+                <p>Evaluate geographic city hubs based on talent, cost of living, and tax incentives.</p>
+              </div>
+            </div>
+            <div class="template-card glass-card" data-template="product-launch">
+              <div class="template-icon"><i class="fa-solid fa-rocket"></i></div>
+              <div class="template-info">
+                <h4>Go-to-Market Strategy</h4>
+                <p>Evaluate GTM marketing vectors: Direct Sales, Content Marketing, and Paid Ads.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dashboard-grid">
+          <!-- Recent Decisions -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-folder-open"></i> Enterprise Decision Projects</span>
+            </div>
+            <div class="recent-decisions-list" id="recent-decisions-list">
+              <!-- Rendered dynamically in app.js -->
+            </div>
+          </div>
+          
+          <!-- System Tips / Explanations -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-shield-halved text-gradient-purple"></i> Decision Auditing</span>
+            </div>
+            <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--text-secondary);">
+              This system implements Multi-Criteria Decision Analysis (MCDA). Weights are normalized automatically, maintaining auditing transparency for board reviews.
+            </p>
+            <div class="info-banner">
+              <i class="fa-solid fa-info-circle"></i>
+              <span>Double-click titles in the Workspace to rename projects. All changes persist automatically.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 2: WORKSPACE (MODEL BUILDING) -->
+      <section class="app-view" id="workspace-view">
+        <div class="main-header">
+          <div class="title-area">
+            <h2 id="workspace-title-display">Decision Workspace</h2>
+            <p id="workspace-desc-display" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              Defining objectives, options, and performance thresholds.
+              <span id="auto-save-indicator" style="font-size: 0.72rem; color: #10b981; font-weight: 600; background: #e6fbf1; padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid rgba(16,185,129,0.15); display: inline-flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-circle-check"></i> Auto-Saved</span>
+            </p>
+          </div>
+          <div class="header-actions no-print">
+            <div class="dropdown" style="position: relative; display: inline-block;">
+              <button class="btn-secondary" id="export-dropdown-btn" style="display: flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+                <i class="fa-solid fa-file-export"></i> Export Report <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i>
+              </button>
+              <div class="dropdown-content" id="export-dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; background: #ffffff; min-width: 190px; box-shadow: 0px 8px 16px 0px rgba(15, 23, 42, 0.15); border-radius: 6px; border: 1px solid var(--border-color); z-index: 100; margin-top: 0.25rem; overflow: hidden;">
+                <a href="#" id="export-image-btn" style="color: var(--text-primary); padding: 0.75rem 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 500; transition: background 0.2s;"><i class="fa-solid fa-image" style="color: var(--primary); font-size: 0.9rem;"></i> Export as Image (PNG)</a>
+                <a href="#" id="export-pdf-btn" style="color: var(--text-primary); padding: 0.75rem 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 500; border-top: 1px solid var(--border-color); transition: background 0.2s;"><i class="fa-solid fa-file-pdf" style="color: #ef4444; font-size: 0.9rem;"></i> Export as PDF Document</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Metadata Status Bar (Official Touch) -->
+        <div class="metadata-status-bar glass-card">
+          <div class="meta-field">
+            <span class="meta-label">System Mode:</span>
+            <span class="meta-value text-gradient-purple" style="font-weight:600;"><i class="fa-solid fa-shield"></i> Certified Audit-Ready</span>
+          </div>
+          <div class="meta-field">
+            <span class="meta-label">Created by:</span>
+            <span class="meta-value" id="workspace-user-display">Executive Committee</span>
+          </div>
+          <div class="meta-field">
+            <span class="meta-label">Classification:</span>
+            <span class="meta-value" style="color: var(--warning);"><i class="fa-solid fa-eye-slash"></i> Internal Confidential</span>
+          </div>
+        </div>
+        
+        <!-- Alternatives & Criteria Setup -->
+        <div class="setup-section">
+          <!-- Alternatives List -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-layer-group"></i> 1. Define Options / Alternatives</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Add mutually exclusive choices or options that you are choosing between.
+            </p>
+            <div class="item-list-container">
+              <div class="list-adder">
+                <input type="text" class="input-glow" id="new-alternative-input" placeholder="e.g., Singapore, Dallas, TX...">
+                <button class="btn-primary" id="add-alternative-btn"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <div class="dynamic-chips-grid" id="alternatives-chips">
+                <!-- Chips loaded dynamically -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Criteria List -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-list-check"></i> 2. Define Criteria & Weights</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Add criteria to evaluate options. Drag sliders below to adjust criteria weightings.
+            </p>
+            <div class="item-list-container">
+              <div class="list-adder">
+                <input type="text" class="input-glow" id="new-criterion-input" placeholder="e.g., Talent Pool, Costs...">
+                <button class="btn-primary" id="add-criterion-btn"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <div class="dynamic-chips-grid" id="criteria-chips">
+                <!-- Chips loaded dynamically -->
+              </div>
+              <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <button class="btn-secondary" id="suggest-criteria-btn" style="align-self: flex-start; font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                  <i class="fa-solid fa-magic"></i> Get AI Suggestions
+                </button>
+                <div class="ai-recommendation-chips" id="ai-suggested-criteria-chips">
+                  <!-- AI suggested tags render here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Weights Sliders Grid -->
+        <div class="glass-card">
+          <div class="card-title">
+            <span><i class="fa-solid fa-sliders"></i> Adjust Objective Weights</span>
+          </div>
+          <div class="sliders-grid" id="criteria-sliders-grid">
+            <!-- Dynamically populated range sliders -->
+          </div>
+        </div>
+        
+        <!-- Scoring Matrix -->
+        <div class="glass-card">
+          <div class="card-title">
+            <span><i class="fa-solid fa-table-list"></i> 3. Scoring Evaluation Matrix</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Score each option (1 = Poor, 10 = Exceptional) against the defined criteria. Scores are weighted automatically.
+          </p>
+          <div class="table-responsive">
+            <table class="matrix-table" id="evaluation-matrix-table">
+              <thead>
+                <tr id="matrix-table-head-row">
+                  <!-- Headers loaded dynamically -->
+                </tr>
+              </thead>
+              <tbody id="matrix-table-body">
+                <!-- Table rows loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Visualization Section -->
+        <div class="workspace-charts">
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-ranking-star"></i> Option Rankings</span>
+            </div>
+            <div class="chart-holder">
+              <canvas id="rankingsChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-chart-bar"></i> Score Contributions</span>
+            </div>
+            <div class="chart-holder">
+              <canvas id="contributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 3: AI ANALYSIS (SWOT/PESTLE) -->
+      <section class="app-view" id="ai-analysis-view">
+        <div class="main-header">
+          <div class="title-area">
+            <h2>AI Strategic Analysis</h2>
+            <p>Generate institutional SWOT and PESTLE matrices based on your model's current parameters.</p>
+          </div>
+        </div>
+        
+        <!-- API Trigger Screen -->
+        <div class="ai-trigger-panel" id="ai-analysis-trigger-panel">
+          <div class="ai-trigger-info">
+            <h3>Ready to Run AI Evaluation</h3>
+            <p>This action will analyze your active alternatives and criteria weights using Gemini.</p>
+          </div>
+          <button class="btn-primary" id="generate-swot-pestle-btn">
+            <i class="fa-solid fa-brain"></i> Generate Strategic Matrix
+          </button>
+        </div>
+        
+        <!-- SWOT & PESTLE Output Grid -->
+        <div id="ai-analysis-output" style="display: none;">
+          <!-- SWOT -->
+          <div class="glass-card" style="margin-bottom: 2rem;">
+            <div class="card-title">
+              <span><i class="fa-solid fa-circle-nodes text-gradient-purple"></i> Decision SWOT Analysis</span>
+            </div>
+            <div class="swot-grid">
+              <div class="swot-card strength">
+                <div class="swot-title"><i class="fa-solid fa-circle-check"></i> Strengths</div>
+                <div class="swot-content"><ul id="swot-strengths"></ul></div>
+              </div>
+              <div class="swot-card weakness">
+                <div class="swot-title"><i class="fa-solid fa-triangle-exclamation"></i> Weaknesses</div>
+                <div class="swot-content"><ul id="swot-weaknesses"></ul></div>
+              </div>
+              <div class="swot-card opportunity">
+                <div class="swot-title"><i class="fa-solid fa-chart-line"></i> Opportunities</div>
+                <div class="swot-content"><ul id="swot-opportunities"></ul></div>
+              </div>
+              <div class="swot-card threat">
+                <div class="swot-title"><i class="fa-solid fa-radiation"></i> Threats</div>
+                <div class="swot-content"><ul id="swot-threats"></ul></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- PESTLE -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span><i class="fa-solid fa-globe text-gradient-purple"></i> Macro-Environmental Factors (PESTLE)</span>
+            </div>
+            <div class="pestle-grid">
+              <div class="pestle-card p">
+                <div class="pestle-header"><i class="fa-solid fa-landmark"></i> Political</div>
+                <div class="pestle-content"><ul id="pestle-political"></ul></div>
+              </div>
+              <div class="pestle-card e">
+                <div class="pestle-header"><i class="fa-solid fa-coins"></i> Economic</div>
+                <div class="pestle-content"><ul id="pestle-economic"></ul></div>
+              </div>
+              <div class="pestle-card s">
+                <div class="pestle-header"><i class="fa-solid fa-users"></i> Social</div>
+                <div class="pestle-content"><ul id="pestle-social"></ul></div>
+              </div>
+              <div class="pestle-card t">
+                <div class="pestle-header"><i class="fa-solid fa-laptop-code"></i> Technological</div>
+                <div class="pestle-content"><ul id="pestle-technological"></ul></div>
+              </div>
+              <div class="pestle-card l">
+                <div class="pestle-header"><i class="fa-solid fa-scale-balanced"></i> Legal</div>
+                <div class="pestle-content"><ul id="pestle-legal"></ul></div>
+              </div>
+              <div class="pestle-card env">
+                <div class="pestle-header"><i class="fa-solid fa-leaf"></i> Environmental</div>
+                <div class="pestle-content"><ul id="pestle-environmental"></ul></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 4: SCENARIO PLANNER -->
+      <section class="app-view" id="scenario-view">
+        <div class="main-header">
+          <div class="title-area">
+            <h2>Macroeconomic Scenario Planner</h2>
+            <p>Stress-test decisions against changing market regimes, recession vectors, or growth triggers.</p>
+          </div>
+        </div>
+        
+        <div class="scenario-selector">
+          <button class="btn-tab active" id="scenario-btn-growth">Hyper-Growth Scenario</button>
+          <button class="btn-tab" id="scenario-btn-downturn">Market Downturn Scenario</button>
+        </div>
+        
+        <!-- Scenario Trigger -->
+        <div class="ai-trigger-panel" id="scenario-trigger-panel">
+          <div class="ai-trigger-info">
+            <h3 id="scenario-name-headline">Aggressive Growth Scenario</h3>
+            <p>Generate risk impact profiles and mitigation paths for each alternative option under this market state.</p>
+          </div>
+          <button class="btn-primary" id="run-scenario-btn">
+            <i class="fa-solid fa-play"></i> Simulate Scenario Impact
+          </button>
+        </div>
+        
+        <div id="scenario-analysis-output" style="display: none;">
+          <div class="scenario-details-grid">
+            <!-- Scenario Card -->
+            <div class="glass-card">
+              <div class="card-title">
+                <span><i class="fa-solid fa-umbrella text-gradient-purple"></i> Scenario Forecast</span>
+              </div>
+              <p id="scenario-description-text" style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7;"></p>
+            </div>
+            
+            <!-- Quick Guidelines -->
+            <div class="glass-card">
+              <div class="card-title">
+                <span><i class="fa-solid fa-shield-halved"></i> Risk Management Strategy</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Adjusting business metrics during extreme cycles is crucial. Review recommendations in the matrix below to plan mitigation policies.
+              </p>
+              <div class="info-banner">
+                <i class="fa-solid fa-check-circle" style="color: var(--success);"></i>
+                <span>Mitigations can be directly discussed and refined with the AI Consultant.</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stress Test Risk Matrix Table -->
+          <div class="glass-card" style="margin-top: 1.5rem;">
+            <div class="card-title">
+              <span><i class="fa-solid fa-shield-virus"></i> Alternative Risk Assessments</span>
+            </div>
+            <div class="table-responsive">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Alternative Option</th>
+                    <th style="width: 130px;">Risk Level</th>
+                    <th>Scenario Impact Analysis</th>
+                    <th>Recommended Mitigation</th>
+                  </tr>
+                </thead>
+                <tbody id="scenario-risk-table-body">
+                  <!-- Loaded dynamically in app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 5: SETTINGS -->
+      <section class="app-view" id="settings-view">
+        <div class="main-header">
+          <div class="title-area">
+            <h2>Account & System Settings</h2>
+            <p>Manage your corporate profile and update account credentials.</p>
+          </div>
+        </div>
+        
+        <div class="settings-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;">
+            
+            <!-- Card 1: User Profile Settings -->
+            <div class="glass-card">
+              <div class="card-title">
+                <span><i class="fa-solid fa-user-gear"></i> User Profile Settings</span>
+              </div>
+              
+              <div class="profile-avatar-sec" style="display: flex; flex-direction: column; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color); margin-bottom: 1rem;">
+                <div class="profile-avatar-circle" id="profile-avatar-clickable" style="cursor: pointer; overflow: hidden; position: relative; width: 80px; height: 80px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; border: 2px solid var(--primary); margin-bottom: 0.5rem;" title="Click to upload profile photo">
+                  <img id="profile-avatar-img" src="" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                  <i class="fa-solid fa-user-tie" id="profile-avatar-icon" style="font-size: 2.2rem; color: #64748b;"></i>
+                </div>
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                <span style="font-size: 0.65rem; color: var(--primary); cursor: pointer; text-decoration: underline; font-weight: 500;" id="upload-photo-label">Click photo to upload</span>
+              </div>
+              
+              <div class="login-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div class="form-group">
+                  <label for="profile-username-input">Update Corporate Name / ID</label>
+                  <div class="profile-input-group" style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.25rem 0.6rem; background: #ffffff;">
+                    <i class="fa-solid fa-signature" style="color: #64748b; margin-right: 0.5rem; font-size: 0.85rem;"></i>
+                    <input type="text" id="profile-username-input" class="input-glow" style="border: none; padding: 0.4rem; box-shadow: none; outline: none; width: 100%;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Registered Corporate Email</label>
+                  <div class="profile-input-group" style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.25rem 0.6rem; background: #f8fafc;">
+                    <i class="fa-solid fa-envelope" style="color: #94a3b8; margin-right: 0.5rem; font-size: 0.85rem;"></i>
+                    <input type="text" id="profile-email-display" class="input-glow" style="border: none; padding: 0.4rem; background: transparent; box-shadow: none; cursor: not-allowed; color: var(--text-muted); width: 100%;" readonly>
+                  </div>
+                </div>
+                <button class="btn-primary" id="save-profile-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                  <i class="fa-solid fa-floppy-disk"></i> Update Profile Info
+                </button>
+              </div>
+            </div>
+            
+            <!-- Card 2: Change Password -->
+            <div class="glass-card">
+              <div class="card-title">
+                <span><i class="fa-solid fa-key"></i> Account Security (Password)</span>
+              </div>
+              
+              <div class="login-form" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div class="form-group">
+                  <label for="profile-current-pass">Current Password</label>
+                  <div style="position: relative; width: 100%;">
+                    <input type="password" id="profile-current-pass" class="input-glow" placeholder="Enter current password" style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+                    <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 0.5rem;">
+                  <label for="profile-new-pass">New Password</label>
+                  <div style="position: relative; width: 100%;">
+                    <input type="password" id="profile-new-pass" class="input-glow" placeholder="Choose new password" style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+                    <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 0.5rem;">
+                  <label for="profile-confirm-pass">Confirm New Password</label>
+                  <div style="position: relative; width: 100%;">
+                    <input type="password" id="profile-confirm-pass" class="input-glow" placeholder="Confirm new password" style="width: 100%; padding-right: 2.2rem; box-sizing: border-box;">
+                    <button type="button" class="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; color: var(--text-muted); cursor: pointer;" title="Toggle password visibility">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <button class="btn-secondary" id="save-password-btn" style="width: 100%; justify-content: center; margin-top: 0.85rem; font-weight: 600; background: var(--bg-surface);">
+                  <i class="fa-solid fa-shield-halved"></i> Update Account Password
+                </button>
+              </div>
+            </div>
+            
+            <!-- Card 3: Account Administration -->
+            <div class="glass-card" style="grid-column: 1 / -1; margin-top: 0.5rem;">
+              <div class="card-title">
+                <span><i class="fa-solid fa-user-gear"></i> Account Administration</span>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0; line-height: 1.4;">Manage your active portal session or permanently delete your account registration details from this device.</p>
+                
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.35rem; max-width: 500px;">
+                  <button class="btn-secondary" id="settings-logout-btn" style="flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.5rem; border: 1px solid var(--border-color); background: #ffffff;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out of Portal
+                  </button>
+                  <button class="btn-primary" id="settings-delete-account-btn" style="flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.5rem; background: #e11d48; border-color: #e11d48; color: #ffffff;">
+                    <i class="fa-solid fa-trash-can"></i> Delete Corporate Account
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </section>
+      
+    </main>
+    
+    <!-- RIGHT COLLAPSIBLE PANEL: Floating AI Consultant Chat -->
+    <aside class="ai-consultant-panel no-print" id="ai-chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-title">
+          <i class="fa-solid fa-user-tie"></i>
+          <h3>Strategic AI Advisor</h3>
+        </div>
+        <button class="close-chat-btn" id="close-chat-btn" title="Collapse chat">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Message history scroll area -->
+      <div class="chat-messages" id="chat-messages-container">
+        <!-- Message bubbles are loaded dynamically -->
+      </div>
+
+      <!-- Clickable AI Chat suggestions (UX Booster) -->
+      <div class="chat-suggestions-bar" id="chat-suggestions-bar">
+        <button class="chat-suggest-pill" data-prompt="Critique my criteria weights to spot potential biases.">Critique Weights</button>
+        <button class="chat-suggest-pill" data-prompt="Recommend other alternatives I should add to this decision.">Suggest Options</button>
+        <button class="chat-suggest-pill" data-prompt="What are the primary implementation risks here?">Analyze Risks</button>
+      </div>
+      
+      <!-- Input and Controls -->
+      <div class="chat-input-area">
+        <input type="text" class="input-glow" id="chat-input-field" placeholder="Ask adviser to critique weights...">
+        <button class="chat-send-btn" id="chat-send-btn" title="Send message">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Floating button to reopen chat when collapsed -->
+    <button class="toggle-chat-trigger no-print" id="toggle-chat-trigger" title="Open AI Advisor">
+      <i class="fa-solid fa-message"></i>
+    </button>
+    
+  </div>
+
+
+
+  <!-- Simulated Google Sign-In loads google_login.html via true popup window -->
+
+  <!-- External Libraries for Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Javascript Modules -->
+  <script src="api.js?v=57"></script>
+  <script src="app.js?v=57"></script>
+</body>
+</html>

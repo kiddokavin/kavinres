@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Business Decision Support System</title>
+    <meta name="description" content="Premium Strategic Planning and Business Intelligence Dashboard equipped with Scenario Forecaster, MCDA Matrix, SWOT Builder, Risk Heatmap, and Gemini AI Consultant.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="decision-support-style.css">
+</head>
+<body>
+    <!-- Background Ambient Glows -->
+    <div class="glow-blob blob-purple"></div>
+    <div class="glow-blob blob-emerald"></div>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <div>
+                        <span class="logo-title">AI Decision Studio</span>
+                        <span class="logo-subtitle">Enterprise Suite</span>
+                    </div>
+                </div>
+                <button class="sidebar-close" id="sidebar-close-btn" aria-label="Close sidebar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#scenario" class="nav-item" data-tab="scenario">
+                    <i data-lucide="sliders"></i>
+                    <span>Scenario Simulator</span>
+                </a>
+                <a href="#mcda" class="nav-item" data-tab="mcda">
+                    <i data-lucide="git-merge"></i>
+                    <span>MCDA Decider</span>
+                </a>
+                <a href="#swot" class="nav-item" data-tab="swot">
+                    <i data-lucide="pie-chart"></i>
+                    <span>SWOT & Strategy</span>
+                </a>
+                <a href="#risk" class="nav-item" data-tab="risk">
+                    <i data-lucide="alert-triangle"></i>
+                    <span>Risk Heatmap</span>
+                </a>
+                <a href="#advisor" class="nav-item" data-tab="advisor">
+                    <i data-lucide="sparkles"></i>
+                    <span>AI Chat Advisor</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="back-link">
+                    <i data-lucide="arrow-left"></i>
+                    <span>Back to Portfolio</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Top Header -->
+            <header class="workspace-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="sidebar-toggle-btn" aria-label="Open sidebar">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <h1 class="page-title" id="active-panel-title">Dashboard</h1>
+                </div>
+                
+                <div class="header-right">
+                    <!-- Gemini Connection Status -->
+                    <button class="api-status-btn" id="api-modal-trigger">
+                        <span class="status-indicator-dot red" id="status-indicator"></span>
+                        <span class="status-text" id="status-text">Gemini AI Offline</span>
+                        <i data-lucide="settings" class="icon-sm"></i>
+                    </button>
+
+                    <div class="quick-stats-header">
+                        <div class="quick-stat-item">
+                            <span class="stat-lbl">Decision Index</span>
+                            <span class="stat-val" id="header-decision-index">78%</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Workspace Area -->
+            <div class="workspace-content">
+
+                <!-- 1. Dashboard Panel -->
+                <section class="tab-panel active" id="panel-dashboard">
+                    <div class="welcome-banner glass-card">
+                        <div class="welcome-text">
+                            <h2>Strategic Business Decider Suite</h2>
+                            <p>An AI-powered environment designed to quantify risk, run multi-variable projections, weight complex operational paths, and receive context-rich strategic analysis.</p>
+                        </div>
+                        <div class="welcome-action">
+                            <button class="btn btn-primary" onclick="showTab('scenario')">
+                                <span>Simulate Scenario</span>
+                                <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card glass-card">
+                            <div class="m-card-header">
+                                <span class="m-card-title">Forecast Profit Margin</span>
+                                <i data-lucide="dollar-sign" class="emerald-text"></i>
+                            </div>
+                            <div class="m-card-body">
+                                <h3 class="m-card-val" id="dash-profit-margin">0%</h3>
+                                <p class="m-card-sub" id="dash-profit-growth">Based on current simulator state</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card glass-card">
+                            <div class="m-card-header">
+                                <span class="m-card-title">Top MCDA Option</span>
+                                <i data-lucide="check-circle-2" class="purple-text"></i>
+                            </div>
+                            <div class="m-card-body">
+                                <h3 class="m-card-val" id="dash-mcda-winner">N/A</h3>
+                                <p class="m-card-sub" id="dash-mcda-score">Configure your decision matrix</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card glass-card">
+                            <div class="m-card-header">
+                                <span class="m-card-title">Identified Risks</span>
+                                <i data-lucide="shield-alert" class="warning-text"></i>
+                            </div>
+                            <div class="m-card-body">
+                                <h3 class="m-card-val" id="dash-risk-count">0</h3>
+                                <p class="m-card-sub" id="dash-critical-risk">0 critical risks plotted</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-details-grid">
+                        <!-- Quick Guide Card -->
+                        <div class="dashboard-large-card glass-card">
+                            <h3><i data-lucide="activity" class="panel-header-icon"></i> Framework Workflow</h3>
+                            <div class="workflow-steps">
+                                <div class="w-step">
+                                    <div class="w-step-num">1</div>
+                                    <div class="w-step-content">
+                                        <h4>Financial Simulation</h4>
+                                        <p>Adjust price elasticity, operating cost levels, and marketing investments in the Scenario Forecaster to dynamically calculate unit metrics and break-even intervals.</p>
+                                    </div>
+                                </div>
+                                <div class="w-step">
+                                    <div class="w-step-num">2</div>
+                                    <div class="w-step-content">
+                                        <h4>Multi-Criteria Selection</h4>
+                                        <p>Add growth strategies to the MCDA matrix, weigh criteria, score choices, and visualize optimal strategic directions.</p>
+                                    </div>
+                                </div>
+                                <div class="w-step">
+                                    <div class="w-step-num">3</div>
+                                    <div class="w-step-content">
+                                        <h4>Risk Plotting</h4>
+                                        <p>Chart operational hazards on the 5x5 Heatmap. Quantify risk factors and plan mitigations.</p>
+                                    </div>
+                                </div>
+                                <div class="w-step">
+                                    <div class="w-step-num">4</div>
+                                    <div class="w-step-content">
+                                        <h4>AI Consulting & SWOT</h4>
+                                        <p>Generate formal SWOT/PESTEL reports and consult the chatbot powered by Gemini AI for customized strategies.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Info / Quick Tools -->
+                        <div class="dashboard-side-card glass-card">
+                            <h3>Quick Actions</h3>
+                            <div class="quick-action-buttons">
+                                <button class="btn btn-outline" onclick="showTab('advisor')">
+                                    <i data-lucide="sparkles"></i>
+                                    <span>Ask Business Advisor</span>
+                                </button>
+                                <button class="btn btn-outline" onclick="showTab('swot')">
+                                    <i data-lucide="pie-chart"></i>
+                                    <span>Generate SWOT Report</span>
+                                </button>
+                                <button class="btn btn-outline" id="btn-export-all">
+                                    <i data-lucide="download"></i>
+                                    <span>Export Decision Report</span>
+                                </button>
+                            </div>
+
+                            <hr class="card-divider">
+
+                            <div class="api-notice-box">
+                                <i data-lucide="info" class="purple-text"></i>
+                                <div>
+                                    <h5>Enhance with Gemini AI</h5>
+                                    <p>Connect your Gemini API key to activate natural language reasoning and tailored responses in the Strategy Builder and AI Chat Advisor.</p>
+                                    <button class="btn btn-text btn-sm" id="btn-trigger-settings-link">Configure Key &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Scenario Simulator Panel -->
+                <section class="tab-panel" id="panel-scenario">
+                    <div class="scenario-workspace">
+                        <!-- Left Sliders Control -->
+                        <div class="control-card glass-card">
+                            <h3><i data-lucide="sliders-horizontal" class="panel-header-icon"></i> Control Variables</h3>
+                            <p class="section-intro">Configure pricing and operational metrics to observe dynamic financial projections.</p>
+
+                            <div class="slider-group">
+                                <div class="slider-lbl-container">
+                                    <span class="slider-lbl">Selling Price per Unit</span>
+                                    <span class="slider-val" id="val-price">$150</span>
+                                </div>
+                                <input type="range" class="custom-slider" id="slider-price" min="10" max="1000" step="5" value="150">
+                                <div class="slider-bounds">
+                                    <span>$10</span>
+                                    <span>$1000</span>
+                                </div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-lbl-container">
+                                    <span class="slider-lbl">Expected Monthly Sales</span>
+                                    <span class="slider-val" id="val-volume">250 units</span>
+                                </div>
+                                <input type="range" class="custom-slider" id="slider-volume" min="5" max="2000" step="5" value="250">
+                                <div class="slider-bounds">
+                                    <span>5 units</span>
+                                    <span>2000 units</span>
+                                </div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-lbl-container">
+                                    <span class="slider-lbl">Variable Unit Cost (COGS)</span>
+                                    <span class="slider-val" id="val-unit-cost">$60</span>
+                                </div>
+                                <input type="range" class="custom-slider" id="slider-unit-cost" min="5" max="500" step="5" value="60">
+                                <div class="slider-bounds">
+                                    <span>$5</span>
+                                    <span>$500</span>
+                                </div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-lbl-container">
+                                    <span class="slider-lbl">Monthly Marketing Budget</span>
+                                    <span class="slider-val" id="val-marketing">$5,000</span>
+                                </div>
+                                <input type="range" class="custom-slider" id="slider-marketing" min="0" max="50000" step="500" value="5000">
+                                <div class="slider-bounds">
+                                    <span>$0</span>
+                                    <span>$50k</span>
+                                </div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-lbl-container">
+                                    <span class="slider-lbl">Fixed General Overhead</span>
+                                    <span class="slider-val" id="val-overhead">$8,000</span>
+                                </div>
+                                <input type="range" class="custom-slider" id="slider-overhead" min="500" max="100000" step="500" value="8000">
+                                <div class="slider-bounds">
+                                    <span>$500</span>
+                                    <span>$100k</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Output / Chart Displays -->
+                        <div class="results-workspace">
+                            <!-- Metrics Cards Block -->
+                            <div class="sub-metrics-row">
+                                <div class="sub-metric-card glass-card">
+                                    <span class="sub-metric-lbl">Monthly Revenue</span>
+                                    <h4 class="sub-metric-val" id="calc-revenue">$0</h4>
+                                </div>
+                                <div class="sub-metric-card glass-card">
+                                    <span class="sub-metric-lbl">Net Profit / Loss</span>
+                                    <h4 class="sub-metric-val" id="calc-profit">$0</h4>
+                                </div>
+                                <div class="sub-metric-card glass-card">
+                                    <span class="sub-metric-lbl">Contribution Margin Ratio</span>
+                                    <h4 class="sub-metric-val" id="calc-margin-ratio">0%</h4>
+                                </div>
+                                <div class="sub-metric-card glass-card">
+                                    <span class="sub-metric-lbl">Break-Even Point</span>
+                                    <h4 class="sub-metric-val" id="calc-breakeven">0 units</h4>
+                                </div>
+                            </div>
+
+                            <!-- Charts Side-by-Side -->
+                            <div class="charts-row">
+                                <div class="chart-container-card glass-card">
+                                    <h4>Break-Even Chart</h4>
+                                    <div class="canvas-wrapper">
+                                        <canvas id="break-even-chart"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="chart-container-card glass-card">
+                                    <h4>12-Month Projections</h4>
+                                    <div class="canvas-wrapper">
+                                        <canvas id="projections-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. MCDA Decider Panel -->
+                <section class="tab-panel" id="panel-mcda">
+                    <div class="mcda-container">
+                        <!-- Top Inputs: Options and Criteria Configuration -->
+                        <div class="mcda-grid-layout">
+                            <div class="mcda-config-card glass-card">
+                                <h3><i data-lucide="list-plus" class="panel-header-icon"></i> 1. Enter Decisions to Compare</h3>
+                                <p class="section-intro">Input the strategies or choices you are currently choosing between.</p>
+                                <div class="mcda-inputs" id="mcda-options-list">
+                                    <!-- Dynamic Option Inputs -->
+                                </div>
+                                <button class="btn btn-outline btn-sm btn-icon" id="btn-add-option">
+                                    <i data-lucide="plus"></i>
+                                    <span>Add Option</span>
+                                </button>
+                            </div>
+
+                            <div class="mcda-config-card glass-card">
+                                <h3><i data-lucide="award" class="panel-header-icon"></i> 2. Define & Weigh Criteria</h3>
+                                <p class="section-intro">Adjust sliders to define what matters most. Higher is more important.</p>
+                                <div class="mcda-inputs" id="mcda-criteria-list">
+                                    <!-- Dynamic Criteria Inputs -->
+                                </div>
+                                <button class="btn btn-outline btn-sm btn-icon" id="btn-add-criteria">
+                                    <i data-lucide="plus"></i>
+                                    <span>Add Criteria</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Matrix Grid Ratings -->
+                        <div class="matrix-card-wrap glass-card">
+                            <h3><i data-lucide="grid-3x3" class="panel-header-icon"></i> 3. Evaluate Options (Score 1-10)</h3>
+                            <p class="section-intro">Rate each option on a scale of 1 (poor) to 10 (excellent) for each criterion.</p>
+                            <div class="matrix-overflow-container">
+                                <table class="matrix-table" id="mcda-matrix-table">
+                                    <!-- Table dynamically generated by JS -->
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Results Block -->
+                        <div class="mcda-results-layout">
+                            <div class="mcda-chart-card glass-card">
+                                <h3>Decision Comparison</h3>
+                                <div class="canvas-wrapper">
+                                    <canvas id="mcda-chart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="mcda-summary-card glass-card">
+                                <h3>Weighted Analysis Results</h3>
+                                <div class="winner-announcement" id="mcda-winner-box">
+                                    <div class="trophy-wrap">
+                                        <i data-lucide="trophy"></i>
+                                    </div>
+                                    <div>
+                                        <span class="winner-lbl">Recommended Choice</span>
+                                        <h4 class="winner-name" id="mcda-winner-name">Option name</h4>
+                                        <p class="winner-desc" id="mcda-winner-desc">Calculated score breakdown details will be displayed here.</p>
+                                    </div>
+                                </div>
+
+                                <div class="rankings-list" id="mcda-rankings-list">
+                                    <!-- Ranked breakdown list -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. SWOT / PESTEL Strategy Panel -->
+                <section class="tab-panel" id="panel-swot">
+                    <div class="swot-layout">
+                        <!-- Configuration Form -->
+                        <div class="swot-form-card glass-card">
+                            <h3><i data-lucide="briefcase" class="panel-header-icon"></i> Profile Settings</h3>
+                            <p class="section-intro">Configure company metadata to tailor the SWOT & PESTEL generation matrices.</p>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-lbl" for="swot-company-name">Company / Project Name</label>
+                                    <input type="text" class="form-control" id="swot-company-name" placeholder="e.g. Apex Solars">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-lbl" for="swot-industry">Industry Segment</label>
+                                    <select class="form-control" id="swot-industry">
+                                        <option value="saas">SaaS & Software</option>
+                                        <option value="ecommerce">E-Commerce & Retail</option>
+                                        <option value="hardware">Electronics & Hardware IoT</option>
+                                        <option value="healthcare">Healthcare Tech</option>
+                                        <option value="manufacturing">Industrial Manufacturing</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-lbl" for="swot-scale">Scale of Operations</label>
+                                    <select class="form-control" id="swot-scale">
+                                        <option value="startup">Early-stage Startup</option>
+                                        <option value="growth">Mid-Market / High Growth</option>
+                                        <option value="enterprise">Mature Enterprise</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-lbl" for="swot-focus">Primary Strategic Goal</label>
+                                    <input type="text" class="form-control" id="swot-focus" placeholder="e.g. Expansions in EU, cost reduction">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-lbl" for="swot-competitor">Key Competitor / Threat</label>
+                                    <input type="text" class="form-control" id="swot-competitor" placeholder="e.g. Direct competitor model">
+                                </div>
+                            </div>
+
+                            <div class="form-actions-swot">
+                                <button class="btn btn-primary" id="btn-generate-swot">
+                                    <i data-lucide="sparkles"></i>
+                                    <span id="generate-swot-btn-text">Generate Strategic Report</span>
+                                </button>
+                                <button class="btn btn-outline" id="btn-export-swot" disabled>
+                                    <i data-lucide="download"></i>
+                                    <span>Copy Report</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Results Tabs (SWOT vs PESTEL) -->
+                        <div class="swot-results-card">
+                            <div class="swot-results-tabs">
+                                <button class="swot-tab-btn active" data-swot-tab="swot-matrix">SWOT Matrix</button>
+                                <button class="swot-tab-btn" data-swot-tab="pestel-matrix">PESTEL Framework</button>
+                                <button class="swot-tab-btn" data-swot-tab="action-plan">Strategic Recommendations</button>
+                            </div>
+
+                            <div class="swot-tab-content active" id="swot-matrix">
+                                <div class="swot-matrix-grid">
+                                    <!-- Strengths -->
+                                    <div class="swot-box swot-strengths">
+                                        <div class="swot-box-header">
+                                            <i data-lucide="arrow-up-right" class="emerald-text"></i>
+                                            <h4>Strengths</h4>
+                                        </div>
+                                        <ul class="swot-list" id="swot-strengths-list">
+                                            <li class="placeholder-item">Enter details and run generator to compile strengths...</li>
+                                        </ul>
+                                    </div>
+                                    <!-- Weaknesses -->
+                                    <div class="swot-box swot-weaknesses">
+                                        <div class="swot-box-header">
+                                            <i data-lucide="arrow-down-left" class="error-text"></i>
+                                            <h4>Weaknesses</h4>
+                                        </div>
+                                        <ul class="swot-list" id="swot-weaknesses-list">
+                                            <li class="placeholder-item">Enter details and run generator to compile weaknesses...</li>
+                                        </ul>
+                                    </div>
+                                    <!-- Opportunities -->
+                                    <div class="swot-box swot-opportunities">
+                                        <div class="swot-box-header">
+                                            <i data-lucide="trending-up" class="purple-text"></i>
+                                            <h4>Opportunities</h4>
+                                        </div>
+                                        <ul class="swot-list" id="swot-opportunities-list">
+                                            <li class="placeholder-item">Enter details and run generator to compile opportunities...</li>
+                                        </ul>
+                                    </div>
+                                    <!-- Threats -->
+                                    <div class="swot-box swot-threats">
+                                        <div class="swot-box-header">
+                                            <i data-lucide="shield-alert" class="warning-text"></i>
+                                            <h4>Threats</h4>
+                                        </div>
+                                        <ul class="swot-list" id="swot-threats-list">
+                                            <li class="placeholder-item">Enter details and run generator to compile threats...</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="swot-tab-content" id="pestel-matrix">
+                                <div class="pestel-grid">
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-purple">P</span> Political</div>
+                                        <p class="p-text" id="pestel-political">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-emerald">E</span> Economic</div>
+                                        <p class="p-text" id="pestel-economic">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-blue">S</span> Social</div>
+                                        <p class="p-text" id="pestel-social">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-warning">T</span> Technological</div>
+                                        <p class="p-text" id="pestel-technological">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-cyan">E</span> Environmental</div>
+                                        <p class="p-text" id="pestel-environmental">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                    <div class="pestel-card glass-card">
+                                        <div class="p-header"><span class="badge badge-danger">L</span> Legal</div>
+                                        <p class="p-text" id="pestel-legal">Configure report inputs and trigger generator.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="swot-tab-content" id="action-plan">
+                                <div class="action-plan-card glass-card">
+                                    <h4>Actionable Strategies</h4>
+                                    <div class="strategy-blocks-wrap" id="action-plan-strategies">
+                                        <p class="placeholder-item">Generate strategic report to review targeted action recommendations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Risk Heatmap Panel -->
+                <section class="tab-panel" id="panel-risk">
+                    <div class="risk-workspace">
+                        <!-- Left Panel: Input Risks -->
+                        <div class="risk-controls glass-card">
+                            <h3><i data-lucide="shield-alert" class="panel-header-icon"></i> Operational Risks</h3>
+                            <p class="section-intro">Identify critical operational, financial, or technical threats, score their likelihood and impact, and plot them onto the heatmap matrix.</p>
+
+                            <form id="risk-entry-form" class="risk-form">
+                                <div class="form-group">
+                                    <label class="form-lbl" for="risk-name">Risk Hazard Name</label>
+                                    <input type="text" class="form-control" id="risk-name" placeholder="e.g. Server downtime, competitor price cut" required>
+                                </div>
+
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-lbl" for="risk-probability">Probability (1-5)</label>
+                                        <select class="form-control" id="risk-probability">
+                                            <option value="1">1 - Rare</option>
+                                            <option value="2">2 - Unlikely</option>
+                                            <option value="3">3 - Moderate</option>
+                                            <option value="4">4 - Likely</option>
+                                            <option value="5">5 - Almost Certain</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-lbl" for="risk-impact">Impact Severity (1-5)</label>
+                                        <select class="form-control" id="risk-impact">
+                                            <option value="1">1 - Negligible</option>
+                                            <option value="2">2 - Minor</option>
+                                            <option value="3">3 - Moderate</option>
+                                            <option value="4">4 - Major</option>
+                                            <option value="5">5 - Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-lbl" for="risk-mitigation">Mitigation Plan Strategy</label>
+                                    <textarea class="form-control" id="risk-mitigation" placeholder="Explain the mitigation protocol or safety netting..." rows="3" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-icon">
+                                    <i data-lucide="plus"></i>
+                                    <span>Plot Risk</span>
+                                </button>
+                            </form>
+
+                            <hr class="card-divider">
+
+                            <h4>Plotted Risk Inventory</h4>
+                            <div class="risk-list" id="risk-list-items">
+                                <!-- Dynamic List of Risks -->
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Heatmap Grid -->
+                        <div class="risk-heatmap-visual">
+                            <div class="heatmap-card glass-card">
+                                <h3>Risk Assessment Matrix</h3>
+                                <div class="heatmap-wrapper">
+                                    <div class="heatmap-y-axis">
+                                        <div class="axis-title-vertical">Probability &rarr;</div>
+                                        <div class="axis-labels-y">
+                                            <span>Almost Certain (5)</span>
+                                            <span>Likely (4)</span>
+                                            <span>Moderate (3)</span>
+                                            <span>Unlikely (2)</span>
+                                            <span>Rare (1)</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="heatmap-grid-core">
+                                        <!-- Dynamic 5x5 cells -->
+                                        <div class="heatmap-matrix-grid" id="heatmap-cells">
+                                            <!-- Cells filled dynamically via JS -->
+                                        </div>
+                                        
+                                        <div class="axis-labels-x">
+                                            <span>Negligible (1)</span>
+                                            <span>Minor (2)</span>
+                                            <span>Moderate (3)</span>
+                                            <span>Major (4)</span>
+                                            <span>Critical (5)</span>
+                                        </div>
+                                        <div class="axis-title-horizontal">Impact Severity &rarr;</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clicked Node Details -->
+                            <div class="risk-details-pane glass-card" id="risk-details-pane">
+                                <div class="no-risk-selected" id="no-risk-selected-msg">
+                                    <i data-lucide="info"></i>
+                                    <p>Click on any plotted node index marker inside the heatmap to review the mitigation strategy card.</p>
+                                </div>
+                                <div class="risk-selected-content hidden" id="risk-selected-content">
+                                    <div class="risk-detail-header">
+                                        <span class="badge" id="risk-detail-severity-badge">High Risk</span>
+                                        <h4 id="risk-detail-title">Competitor price undercut</h4>
+                                    </div>
+                                    <div class="risk-score-subrow">
+                                        <span>Probability: <strong id="risk-detail-prob">4/5</strong></span>
+                                        <span>Impact: <strong id="risk-detail-impact">3/5</strong></span>
+                                        <span>Risk Value: <strong id="risk-detail-value">12/25</strong></span>
+                                    </div>
+                                    <div class="risk-mitigation-content">
+                                        <h5>Mitigation Protocol</h5>
+                                        <p id="risk-detail-mitigation">No mitigation details provided.</p>
+                                    </div>
+                                    <button class="btn btn-text btn-danger btn-sm" id="btn-delete-active-risk">
+                                        <i data-lucide="trash-2" class="icon-sm"></i>
+                                        <span>Remove Risk Point</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. AI Chat Consultant Panel -->
+                <section class="tab-panel" id="panel-advisor">
+                    <div class="chat-workspace">
+                        <!-- Left Panel: Context Selector & API Config -->
+                        <div class="chat-sidebar-context glass-card">
+                            <h3><i data-lucide="database" class="panel-header-icon"></i> Context Filters</h3>
+                            <p class="section-intro">Feed custom contextual parameters directly into the AI consult pipeline.</p>
+
+                            <div class="form-group">
+                                <label class="form-lbl">Consulting Focus Domain</label>
+                                <select class="form-control" id="chat-focus-domain">
+                                    <option value="pricing">Pricing Strategy & Growth</option>
+                                    <option value="market">Market Entry & Competitors</option>
+                                    <option value="funding">Funding & Investment Pitching</option>
+                                    <option value="operations">Cash Flow & Unit Operations</option>
+                                    <option value="product">Product Launch Roadmap</option>
+                                </select>
+                            </div>
+
+                            <hr class="card-divider">
+
+                            <h4>Pre-configured Prompts</h4>
+                            <p class="section-intro">Select a template prompt below to load a preset consultant analysis.</p>
+                            
+                            <div class="chat-presets">
+                                <button class="preset-btn" data-prompt="Draft a Go-To-Market strategy for a SaaS startup expanding into European markets. Include competitive analysis strategies.">
+                                    <i data-lucide="map"></i>
+                                    <span>GTM SaaS European Roadmap</span>
+                                </button>
+                                <button class="preset-btn" data-prompt="Analyze pricing model strategies. How can we shift from transactional sales to high-margin recurring subscriptions without alienating users?">
+                                    <i data-lucide="dollar-sign"></i>
+                                    <span>Pricing Shift (Transactional &rarr; ARR)</span>
+                                </button>
+                                <button class="preset-btn" data-prompt="Explain typical unit economic metrics. What are the key indicators for marketing ROMS, customer acquisition cost, and lifetime value optimization?">
+                                    <i data-lucide="trending-up"></i>
+                                    <span>Unit Economics Optimization Check</span>
+                                </button>
+                                <button class="preset-btn" data-prompt="Generate a hiring plan for a seed-funded startup. How should we prioritize hiring our first 5 engineers vs 2 sales professionals?">
+                                    <i data-lucide="users"></i>
+                                    <span>Seed-stage Hiring Framework</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Message Interface -->
+                        <div class="chat-main-interface glass-card">
+                            <div class="chat-feed" id="chat-conversation-feed">
+                                <!-- Messages will load here -->
+                                <div class="chat-message system">
+                                    <div class="msg-avatar"><i data-lucide="bot"></i></div>
+                                    <div class="msg-bubble">
+                                        <p>Hello! I am your AI Business Advisor. I can analyze simulated scenarios, check decision matrices, examine SWOT outputs, and answer custom business strategy queries.</p>
+                                        <p class="gemini-hint-msg" id="gemini-notice"><em>Notice: Connecting a Gemini API Key enables unbounded natural language reasoning. Click the status button in the top right header to connect a key.</em></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Input Box -->
+                            <div class="chat-input-container">
+                                <textarea class="chat-textarea" id="chat-input-textarea" placeholder="Query the AI Advisor (e.g. 'Help me optimize variable overhead costs...')" rows="1"></textarea>
+                                <button class="btn btn-primary btn-sm btn-icon" id="btn-send-message" aria-label="Send message">
+                                    <i data-lucide="send"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Gemini Config Settings Modal -->
+    <div class="modal-overlay hidden" id="api-modal">
+        <div class="modal-box glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="key" class="purple-text"></i> Google Gemini API Settings</h3>
+                <button class="modal-close" id="api-modal-close" aria-label="Close modal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Connect this dashboard to Google Gemini for actual, real-time business model advisory. Your key is stored locally in your browser's memory and is never shared.</p>
+                
+                <div class="form-group">
+                    <label class="form-lbl" for="input-gemini-key">Gemini API Key</label>
+                    <input type="password" class="form-control" id="input-gemini-key" placeholder="AIzaSy...">
+                    <small class="form-help">Don't have a key? Get one for free from the <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>.</small>
+                </div>
+
+                <div class="modal-status-alert hidden" id="key-test-result">
+                    <!-- Key validation status -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="btn-clear-key">Remove Key</button>
+                <button class="btn btn-primary" id="btn-save-key">Save & Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="decision-support-script.js"></script>
+</body>
+</html>
