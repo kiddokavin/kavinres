@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NER-Asha | Elderly Dementia Cognitive Platform & Care Companion</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- Top Application Header -->
+  <header class="platform-header">
+    <div class="header-logo">
+      <div class="logo-icon-container">
+        <i class="fa-solid fa-hand-holding-heart logo-icon"></i>
+      </div>
+      <div>
+        <h1>NER-Asha</h1>
+        <p>AI Cognitive Assistant & Memory Companion for North-East India</p>
+      </div>
+    </div>
+
+    <!-- Header Actions (Elderly Friendly Targets) -->
+    <div class="header-actions">
+      <!-- Calm Music Player Control -->
+      <button id="btn-ambient-music" class="btn-music" title="Toggle background melody">
+        <i class="fa-solid fa-volume-high"></i> Soothing Flute
+      </button>
+
+      <!-- Language Selector -->
+      <div class="header-control-group">
+        <label for="lang-select"><i class="fa-solid fa-language"></i> Language:</label>
+        <select id="lang-select" class="dropdown-large">
+          <option value="en">English (US)</option>
+          <option value="as">Assamese (অসমীয়া)</option>
+          <option value="bn">Bengali (বাংলা)</option>
+          <option value="mz">Mizo (Mizo ṭawng)</option>
+          <option value="kh">Khasi (Ka Ktien Khasi)</option>
+        </select>
+      </div>
+
+      <!-- Mode Toggle -->
+      <button id="btn-toggle-portal" class="btn-portal-toggle">
+        <i class="fa-solid fa-user-gear"></i> Caregiver Mode
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= PATIENT SECTION (DEFAULT VIEW) ================= -->
+  <main class="portal-container" id="patient-section">
+    
+    <!-- 1. Aina Daily Orientation Assistant -->
+    <section class="patient-card card-orientation">
+      <div class="avatar-column">
+        <div class="avatar-outer-ring animate-pulse">
+          <div class="avatar-inner-face">
+            <i class="fa-solid fa-face-smile-beam"></i>
+          </div>
+        </div>
+        <span class="avatar-name">Aina</span>
+        <span class="avatar-badge"><i class="fa-solid fa-comment-dots"></i> Reading Helper</span>
+      </div>
+
+      <div class="orientation-details">
+        <div class="orientation-header">
+          <h2 id="orient-greeting">Good Evening, Grandfather!</h2>
+          <button id="btn-speak-orientation" class="btn-action-large btn-tts">
+            <i class="fa-solid fa-volume-high"></i> Hear this aloud
+          </button>
+        </div>
+        
+        <p class="orientation-text" id="orient-speech-text">
+          Today is Sunday, August 23, 2026. You are at home in your cozy house in Guwahati, Assam. The weather outside is warm and pleasant today. Everything is safe and secure.
+        </p>
+
+        <div class="orientation-bottom-row">
+          <div class="reminders-block">
+            <h3><i class="fa-solid fa-heart-pulse"></i> Reminders for You:</h3>
+            <ul class="reminders-list" id="orient-reminders">
+              <li><span class="bullet-check green"></span> Take the yellow pill after your evening snack.</li>
+              <li><span class="bullet-check blue"></span> Drink a warm glass of milk at 8:00 PM.</li>
+            </ul>
+          </div>
+          
+          <!-- Mock AI Camera Scanner Helper -->
+          <div class="scanner-block">
+            <h3><i class="fa-solid fa-wand-magic-sparkles"></i> "What is this?" AI Assistant</h3>
+            <p>Pick an object below to learn about it and hear a memory story:</p>
+            <div class="scanner-grid">
+              <button class="btn-scan-item" data-item="gamosa">
+                <i class="fa-solid fa-scroll text-red"></i> Gamosa
+              </button>
+              <button class="btn-scan-item" data-item="japi">
+                <i class="fa-solid fa-hat-cowboy-side text-yellow"></i> Japi Hat
+              </button>
+              <button class="btn-scan-item" data-item="tea">
+                <i class="fa-solid fa-mug-hot text-blue"></i> Hot Tea
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Split Game Grid -->
+    <div class="split-portal-grid">
+      
+      <!-- GAME A: MEMORY CARD MATCHING -->
+      <section class="patient-card card-game">
+        <div class="card-title-row">
+          <h2><i class="fa-solid fa-puzzle-piece"></i> Memory Card Match</h2>
+          <span class="game-instruction">Tap cards to find matching pairs from North-East India</span>
+        </div>
+        
+        <div class="game-stats-row">
+          <span>Completed Pairs: <strong id="match-pairs-count">0 / 6</strong></span>
+          <button id="btn-reset-match-game" class="btn-game-control"><i class="fa-solid fa-rotate-left"></i> Start Over</button>
+        </div>
+
+        <div class="card-matching-grid" id="match-game-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- GAME B: SEMANTIC WORD ASSOCIATIONS -->
+      <section class="patient-card card-game">
+        <div class="card-title-row">
+          <h2><i class="fa-solid fa-circle-nodes"></i> Regional Word Linker</h2>
+          <span class="game-instruction">Match the cultural item on the left with its state on the right</span>
+        </div>
+
+        <div class="word-linking-container">
+          <div class="word-linking-column" id="word-left-column">
+            <!-- Populated by JS -->
+          </div>
+          <div class="word-linking-column" id="word-right-column">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="word-linker-footer">
+          <span id="word-linker-status">Click a word on the left to begin.</span>
+          <button id="btn-reset-word-game" class="btn-game-control"><i class="fa-solid fa-arrows-rotate"></i> Reset Words</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 3. Bottom Row: Memory Vault & Rhythm Beats -->
+    <div class="split-portal-grid">
+      
+      <!-- GAME C: MUSIC BEAT REPETITION -->
+      <section class="patient-card card-game">
+        <div class="card-title-row">
+          <h2><i class="fa-solid fa-music"></i> Traditional Drum Beats</h2>
+          <span class="game-instruction">Listen to the rhythm sequence and repeat it by tapping the drums</span>
+        </div>
+
+        <div class="rhythm-selector-row">
+          <button class="btn-rhythm-load active" data-rhythm="rhythm-dhol">Assamese Bihu Dhol</button>
+          <button class="btn-rhythm-load" data-rhythm="rhythm-bamboo">Mizo Bamboo Claps</button>
+        </div>
+
+        <div class="rhythm-drum-container">
+          <div class="drum drum-red" id="drum-red" data-color="red"><i class="fa-solid fa-drum"></i></div>
+          <div class="drum drum-yellow" id="drum-yellow" data-color="yellow"><i class="fa-solid fa-drum"></i></div>
+          <div class="drum drum-green" id="drum-green" data-color="green"><i class="fa-solid fa-drum"></i></div>
+          <div class="drum drum-blue" id="drum-blue" data-color="blue"><i class="fa-solid fa-drum"></i></div>
+        </div>
+
+        <div class="rhythm-footer">
+          <button id="btn-play-rhythm" class="btn-action-large btn-play-beats"><i class="fa-solid fa-play"></i> Play Rhythm Beats</button>
+          <span id="rhythm-score-status" class="rhythm-status-text">Click play to listen to the pattern!</span>
+        </div>
+      </section>
+
+      <!-- REMINISCENCE VAULT -->
+      <section class="patient-card card-reminiscence">
+        <div class="card-title-row">
+          <h2><i class="fa-solid fa-images"></i> My Family Memory Vault</h2>
+          <span class="game-instruction">Familiar family memories & historical events to trigger recall</span>
+        </div>
+
+        <div class="vault-slideshow-container">
+          <button id="btn-vault-prev" class="btn-nav-vault"><i class="fa-solid fa-chevron-left"></i></button>
+          
+          <div class="vault-slide-content" id="vault-slide-box">
+            <!-- Populated by JS -->
+          </div>
+
+          <button id="btn-vault-next" class="btn-nav-vault"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="vault-footer">
+          <button id="btn-speak-vault" class="btn-action-large btn-speak-story">
+            <i class="fa-solid fa-circle-play"></i> Listen to Family Story
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= CAREGIVER SECTION (HIDDEN BY DEFAULT) ================= -->
+  <main class="portal-container hidden" id="caregiver-section">
+    
+    <!-- Caregiver Statistics Row -->
+    <section class="caregiver-summary-row">
+      <div class="summary-mini-card">
+        <i class="fa-solid fa-circle-check text-green"></i>
+        <div>
+          <span class="mini-lbl">Games Completed Today</span>
+          <span class="mini-val" id="cg-games-completed">8 / 10</span>
+        </div>
+      </div>
+      <div class="summary-mini-card">
+        <i class="fa-solid fa-bolt text-yellow"></i>
+        <div>
+          <span class="mini-lbl">Average Response Time</span>
+          <span class="mini-val" id="cg-response-time">16.5 sec</span>
+        </div>
+      </div>
+      <div class="summary-mini-card">
+        <i class="fa-solid fa-bullseye text-orange"></i>
+        <div>
+          <span class="mini-lbl">Memory Recall Accuracy</span>
+          <span class="mini-val" id="cg-memory-accuracy">85 %</span>
+        </div>
+      </div>
+      <div class="summary-mini-card">
+        <i class="fa-solid fa-pills text-blue"></i>
+        <div>
+          <span class="mini-lbl">Daily Pill Compliance</span>
+          <span class="mini-val" id="cg-pill-compliance">2 / 3 taken</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="split-portal-grid">
+      
+      <!-- Caregiver Charts -->
+      <section class="caregiver-card card-analytics">
+        <div class="card-header-simple">
+          <h2><i class="fa-solid fa-chart-line"></i> Patient Cognitive Progression Trends</h2>
+          <p>Long-term statistics gathered from daily memory card and word link puzzles.</p>
+        </div>
+        <div class="caregiver-body">
+          <div class="caregiver-charts-grid">
+            <div class="cg-chart-wrapper">
+              <span class="cg-chart-title">Memory Response Velocity (Reaction Time in Sec)</span>
+              <canvas id="chart-cg-speed"></canvas>
+            </div>
+            <div class="cg-chart-wrapper">
+              <span class="cg-chart-title">Matching Game Accuracy Rate (%)</span>
+              <canvas id="chart-cg-accuracy"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Logging Portal -->
+      <section class="caregiver-card card-log-entry">
+        <div class="card-header-simple">
+          <h2><i class="fa-solid fa-file-signature"></i> Caregiver Daily Journal & Log</h2>
+          <p>Update medicine dosage schedules, record mood status, and log memory indicators.</p>
+        </div>
+        <div class="caregiver-body">
+          <form id="caregiver-journal-form">
+            
+            <div class="cg-form-group">
+              <label>Medicine Log (Sunday):</label>
+              <div class="cg-checkbox-row">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="pill-morning" checked>
+                  <span class="checkmark"></span> Morning Pill (Done)
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" id="pill-afternoon" checked>
+                  <span class="checkmark"></span> Afternoon Pill (Done)
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" id="pill-evening">
+                  <span class="checkmark"></span> Evening Pill (8:00 PM)
+                </label>
+              </div>
+            </div>
+
+            <div class="cg-form-group">
+              <label>Patient Mood Assessment:</label>
+              <div class="cg-radio-row">
+                <label class="radio-container mood-happy">
+                  <input type="radio" name="mood-select" value="Happy" checked>
+                  <span class="radiomark"></span> Happy
+                </label>
+                <label class="radio-container mood-calm">
+                  <input type="radio" name="mood-select" value="Calm">
+                  <span class="radiomark"></span> Calm
+                </label>
+                <label class="radio-container mood-restless">
+                  <input type="radio" name="mood-select" value="Restless">
+                  <span class="radiomark"></span> Restless
+                </label>
+                <label class="radio-container mood-confused">
+                  <input type="radio" name="mood-select" value="Confused">
+                  <span class="radiomark"></span> Confused
+                </label>
+              </div>
+            </div>
+
+            <div class="cg-form-group">
+              <label for="cg-journal-notes">Behavioral & Cognitive Observation Notes:</label>
+              <textarea id="cg-journal-notes" rows="3" placeholder="Enter notes: e.g. 'He was talkative today, recalled his school days in Shillong, but struggled with names of items during tea time...'"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-save-log"><i class="fa-solid fa-floppy-disk"></i> Commit Log Entry</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Caregiver History Log Sheet -->
+    <section class="caregiver-card card-log-feed">
+      <div class="card-header-simple">
+        <h2><i class="fa-solid fa-list-check"></i> Caregiver Log History</h2>
+      </div>
+      <div class="caregiver-body">
+        <div class="log-history-table-wrapper">
+          <table class="log-history-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Caregiver ID</th>
+                <th>Medicines Compliance</th>
+                <th>Logged Mood</th>
+                <th>Observation Journal Notes</th>
+              </tr>
+            </thead>
+            <tbody id="cg-log-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Background Music Audio Synthesizer Toggle Status -->
+  <div class="music-floating-indicator" id="melody-player-box">
+    <i class="fa-solid fa-music music-note-anim"></i>
+    <span>Playing soft relaxation flute...</span>
+  </div>
+
+  <!-- Scripts -->
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Application Controller -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
