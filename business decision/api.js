@@ -450,3 +450,4 @@ That is a critical strategic vector. For this decision model, I recommend focusi
     return reply;
   }
 };
+window.GeminiAPI = GeminiAPI;

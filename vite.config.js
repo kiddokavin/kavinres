@@ -6,7 +6,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        decisionSupport: resolve(__dirname, 'decision-support.html'),
+        decisionSupport: resolve(__dirname, 'business decision/index.html'),
       },
     },
   },
