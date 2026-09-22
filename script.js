@@ -241,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Certifications Rendering, Filter and Search Mechanism
     const certifications = [
+        { name: "Introduction to Data Analytics", issuer: "Simplilearn SkillUp", category: "cloud-data", badgeClass: "cloud", link: "https://drive.google.com/drive/folders/151ilxSL3HM4lJu6plGbL0K412ALYO4lf" },
         { name: "AWS S3 Basics", issuer: "AWS", category: "cloud-data", badgeClass: "cloud", link: "https://drive.google.com/drive/folders/151ilxSL3HM4lJu6plGbL0K412ALYO4lf" },
         { name: "Introduction to NoSQL Databases", issuer: "Infosys Springboard", category: "cloud-data", badgeClass: "cloud", link: "https://drive.google.com/drive/folders/151ilxSL3HM4lJu6plGbL0K412ALYO4lf" },
         { name: "Database Management System - Part 1", issuer: "NPTEL", category: "cloud-data", badgeClass: "cloud", link: "https://drive.google.com/drive/folders/151ilxSL3HM4lJu6plGbL0K412ALYO4lf" },
